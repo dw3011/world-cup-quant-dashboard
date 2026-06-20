@@ -3,14 +3,15 @@ import { PageContainer } from "@/components/layout/PageContainer";
 import { MatchHeader } from "@/components/match/MatchHeader";
 import { ReviewForm } from "@/components/review/ReviewForm";
 import { ReviewResult } from "@/components/review/ReviewResult";
-import { getMatch, mockReviews } from "@/data/mockMatches";
-import { predictionFor } from "@/lib/models/probability";
+import { getMatchById, getOrGeneratePrediction, getReviewByMatchId } from "@/lib/repositories";
 
-export default function ReviewPage({ params }: { params: { id: string } }) {
-  const match = getMatch(params.id);
+export const dynamic = "force-dynamic";
+
+export default async function ReviewPage({ params }: { params: { id: string } }) {
+  const match = await getMatchById(params.id);
   if (!match) notFound();
-  const prediction = predictionFor(match);
-  const review = mockReviews.find((item) => item.match_id === match.id);
+  const prediction = await getOrGeneratePrediction(match);
+  const review = await getReviewByMatchId(match.id);
 
   return (
     <PageContainer>

@@ -2,8 +2,17 @@ import { AccuracyChart } from "@/components/stats/AccuracyChart";
 import { StatsCard } from "@/components/stats/StatsCard";
 import { TrendChart } from "@/components/stats/TrendChart";
 import { PageContainer } from "@/components/layout/PageContainer";
+import { listPredictions, listReviews } from "@/lib/repositories";
 
-export default function StatsPage() {
+export const dynamic = "force-dynamic";
+
+export default async function StatsPage() {
+  const [reviews, predictions] = await Promise.all([listReviews(), listPredictions()]);
+  const total = reviews.length;
+  const resultHit = total ? Math.round((reviews.filter((item) => item.hit_result).length / total) * 1000) / 10 : 0;
+  const goalsHit = total ? Math.round((reviews.filter((item) => item.hit_goals_range).length / total) * 1000) / 10 : 0;
+  const scoreClose = total ? Math.round((reviews.filter((item) => item.hit_score_accuracy !== "未命中").length / total) * 1000) / 10 : 0;
+
   return (
     <PageContainer>
       <div className="mb-6">
@@ -11,10 +20,10 @@ export default function StatsPage() {
         <p className="mt-2 text-secondary">展示规则模型结构、命中率、风险分层与最近 10 场预测表现。</p>
       </div>
       <section className="mb-6 grid gap-4 md:grid-cols-2 lg:grid-cols-5">
-        <StatsCard label="总预测场次" value="128" />
-        <StatsCard label="胜平负命中率" value="74.2%" />
-        <StatsCard label="进球数命中率" value="68.5%" />
-        <StatsCard label="比分接近率" value="42.8%" />
+        <StatsCard label="总预测场次" value={String(predictions.length)} />
+        <StatsCard label="胜平负命中率" value={`${resultHit}%`} />
+        <StatsCard label="进球数命中率" value={`${goalsHit}%`} />
+        <StatsCard label="比分接近率" value={`${scoreClose}%`} />
         <StatsCard label="高信心场次命中率" value="89.4%" tone="primary" />
       </section>
       <section className="mb-6 grid gap-6 lg:grid-cols-2">

@@ -1,15 +1,20 @@
 import { NextResponse } from "next/server";
-import { mockReports } from "@/data/mockMatches";
-import { createAIClient } from "@/lib/ai/client";
+import { generateAIReport } from "@/lib/ai/report";
+import { getMatchById, getOrGeneratePrediction, saveAIReport } from "@/lib/repositories";
 
 export async function POST(request: Request) {
   const body = await request.json().catch(() => ({}));
-  const client = await createAIClient();
-  const report = mockReports.find((item) => item.match_id === body.match_id) ?? mockReports[0];
+  const matchId = body.match_id as string | undefined;
+  if (!matchId) {
+    return NextResponse.json({ error: "缺少 match_id" }, { status: 400 });
+  }
 
-  return NextResponse.json({
-    ...report,
-    provider_ready: client.enabled,
-    note: "第一版返回 mock 中文报告；真实 LLM 接入时仅从服务端环境变量读取 API Key。"
-  });
+  const match = await getMatchById(matchId);
+  if (!match) {
+    return NextResponse.json({ error: "比赛不存在" }, { status: 404 });
+  }
+
+  const prediction = await getOrGeneratePrediction(match, true);
+  const report = await saveAIReport(await generateAIReport(match, prediction));
+  return NextResponse.json(report);
 }

@@ -1,7 +1,20 @@
-export async function createAIClient() {
-  const apiKey = process.env.OPENAI_API_KEY || process.env.DEEPSEEK_API_KEY;
-  return {
-    enabled: Boolean(apiKey),
-    apiKeyPresent: Boolean(apiKey)
-  };
+import "server-only";
+import OpenAI from "openai";
+
+let cachedClient: OpenAI | null = null;
+
+export function isOpenAIConfigured() {
+  return Boolean(process.env.OPENAI_API_KEY);
+}
+
+export function getOpenAIClient() {
+  if (!isOpenAIConfigured()) return null;
+
+  if (!cachedClient) {
+    cachedClient = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY
+    });
+  }
+
+  return cachedClient;
 }
