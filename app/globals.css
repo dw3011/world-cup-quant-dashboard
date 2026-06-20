@@ -1,0 +1,45 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap");
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  min-height: 100vh;
+  background: #faf8ff;
+  color: #191b23;
+}
+
+@layer components {
+  .card {
+    @apply rounded-2xl border border-outline-variant bg-surface p-6 shadow-card;
+  }
+
+  .soft-card {
+    @apply rounded-xl border border-outline-variant bg-surface-low p-4;
+  }
+
+  .label-caps {
+    @apply text-[11px] font-semibold uppercase leading-4 tracking-[0.05em] text-secondary;
+  }
+
+  .input {
+    @apply w-full rounded-lg border border-outline-variant bg-white px-3 py-2 text-sm outline-none transition focus:border-primary focus:ring-4 focus:ring-primary/20;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg bg-primary px-4 py-2 text-sm font-semibold text-white transition hover:bg-primary-dark;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg border border-outline-variant bg-white px-4 py-2 text-sm font-semibold text-text-main transition hover:bg-surface-low;
+  }
+}
