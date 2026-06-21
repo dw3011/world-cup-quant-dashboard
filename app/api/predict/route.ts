@@ -1,6 +1,5 @@
 import { NextResponse } from "next/server";
-import { getMatchById, savePrediction } from "@/lib/repositories";
-import { predictionFor } from "@/lib/models/probability";
+import { generatePredictionFromLatestOdds, getMatchById } from "@/lib/repositories";
 
 export async function POST(request: Request) {
   const body = await request.json().catch(() => ({}));
@@ -14,6 +13,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "比赛不存在" }, { status: 404 });
   }
 
-  const prediction = await savePrediction(predictionFor(match));
+  const prediction = await generatePredictionFromLatestOdds(match, true);
+  if (!prediction) {
+    return NextResponse.json({ error: "请先录入赔率" }, { status: 400 });
+  }
+
   return NextResponse.json(prediction);
 }

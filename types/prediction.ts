@@ -1,5 +1,7 @@
 export interface Prediction {
+  id?: string;
   match_id: string;
+  odds_snapshot_id?: string | null;
   win_prob_home: number;
   draw_prob: number;
   win_prob_away: number;
@@ -10,6 +12,9 @@ export interface Prediction {
 }
 
 export interface AIReport {
+  id?: string;
   match_id: string;
+  prediction_id?: string | null;
   sections: Array<{ title: string; content: string }>;
+  summary?: string;
 }

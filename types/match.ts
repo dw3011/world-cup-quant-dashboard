@@ -30,7 +30,9 @@ export interface Match {
   away_team: string;
   away_flag: string;
   group_name: string;
+  match_date?: string;
   match_time: string;
+  stage?: string;
   status: MatchStatus;
   score_home: number | null;
   score_away: number | null;
@@ -38,4 +40,31 @@ export interface Match {
   ai_status?: "已生成" | "待生成" | "待复盘" | "已归档";
   odds: Odds;
   manual: ManualInput;
+}
+
+export interface OddsSnapshot {
+  id?: string;
+  match_id: string;
+  source: string;
+  win_odds: number;
+  draw_odds: number;
+  loss_odds: number;
+  handicap_line?: string;
+  handicap_win_odds?: number;
+  handicap_draw_odds?: number;
+  handicap_loss_odds?: number;
+  raw_text?: string;
+  created_at?: string;
+}
+
+export interface ParsedOddsText {
+  home_team: string;
+  away_team: string;
+  win_odds: number | null;
+  draw_odds: number | null;
+  loss_odds: number | null;
+  handicap_line: string;
+  handicap_win_odds: number | null;
+  handicap_draw_odds: number | null;
+  handicap_loss_odds: number | null;
 }

@@ -1,5 +1,7 @@
 export interface Review {
+  id?: string;
   match_id: string;
+  prediction_id?: string | null;
   actual_score_home: number;
   actual_score_away: number;
   hit_result: boolean;

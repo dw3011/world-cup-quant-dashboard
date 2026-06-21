@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { getMatchById, getOrGeneratePrediction, saveReview, updateMatchScore } from "@/lib/repositories";
+import { generatePredictionFromLatestOdds, getMatchById, getPredictionByMatchId, saveReview, updateMatchScore } from "@/lib/repositories";
 import type { Review } from "@/types/review";
 
 function resultOf(home: number, away: number) {
@@ -44,7 +44,11 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "比赛不存在" }, { status: 404 });
   }
 
-  const prediction = await getOrGeneratePrediction(match, true);
+  const prediction = (await getPredictionByMatchId(matchId)) ?? (await generatePredictionFromLatestOdds(match, true));
+  if (!prediction) {
+    return NextResponse.json({ error: "请先录入赔率并生成预测" }, { status: 400 });
+  }
+
   const review: Review = {
     match_id: matchId,
     actual_score_home: actualHome,

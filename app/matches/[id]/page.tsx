@@ -9,7 +9,7 @@ import { OddsPanel } from "@/components/match/OddsPanel";
 import { ProbabilityPanel } from "@/components/match/ProbabilityPanel";
 import { RiskBadge } from "@/components/match/RiskBadge";
 import { ScorePrediction } from "@/components/match/ScorePrediction";
-import { getAIReportByMatchId, getMatchById, getPredictionByMatchId, getReviewByMatchId } from "@/lib/repositories";
+import { getAIReportByMatchId, getLatestOddsSnapshotByMatchId, getMatchById, getPredictionByMatchId, getReviewByMatchId, matchWithOddsSnapshot } from "@/lib/repositories";
 
 export const dynamic = "force-dynamic";
 
@@ -19,6 +19,8 @@ export default async function MatchDetailPage({ params }: { params: { id: string
   const prediction = await getPredictionByMatchId(match.id);
   const report = await getAIReportByMatchId(match.id);
   const review = await getReviewByMatchId(match.id);
+  const latestOdds = await getLatestOddsSnapshotByMatchId(match.id);
+  const matchForOdds = latestOdds ? matchWithOddsSnapshot(match, latestOdds) : match;
 
   return (
     <PageContainer>
@@ -30,13 +32,23 @@ export default async function MatchDetailPage({ params }: { params: { id: string
         <MatchHeader match={match} />
         <MatchDetailActions
           matchId={match.id}
-          showPredict={!prediction}
-          showAIReport={!report}
+          showPredict={Boolean(latestOdds && !prediction)}
+          showAIReport={Boolean(prediction && !report)}
           showReview={match.status === "FINISHED" && !review}
         />
         <div className="grid gap-6 lg:grid-cols-12">
           <div className="space-y-6 lg:col-span-8">
-            <OddsPanel match={match} />
+            {latestOdds ? (
+              <OddsPanel match={matchForOdds} />
+            ) : (
+              <div className="card flex flex-wrap items-center justify-between gap-3">
+                <div>
+                  <h2 className="font-display text-xl font-bold">请先录入赔率</h2>
+                  <p className="mt-1 text-sm text-secondary">规则模型需要 latest odds_snapshot 才能生成分析。</p>
+                </div>
+                <Link href={`/daily-input?date=${match.match_time.slice(0, 10)}`} className="btn-primary">录入赔率</Link>
+              </div>
+            )}
             {prediction ? (
               <div className="card space-y-6">
                 <h2 className="font-display text-2xl font-bold">量化模型预测</h2>

@@ -2,11 +2,12 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { BarChart3, CalendarDays, PlusCircle, Search, Settings, ShieldCheck } from "lucide-react";
+import { BarChart3, CalendarDays, ClipboardEdit, PlusCircle, Search, Settings, ShieldCheck } from "lucide-react";
 
 const navItems = [
   { href: "/", label: "今日分析", icon: CalendarDays },
-  { href: "/new-match", label: "新增比赛", icon: PlusCircle },
+  { href: "/daily-input", label: "今日录入", icon: ClipboardEdit },
+  { href: "/matches/manage", label: "赛程维护", icon: PlusCircle },
   { href: "/stats", label: "模型统计", icon: BarChart3 },
   { href: "/settings", label: "模型设置", icon: Settings }
 ];

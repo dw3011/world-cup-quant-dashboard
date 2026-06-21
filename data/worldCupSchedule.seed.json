@@ -1,0 +1,46 @@
+[
+  {
+    "match_date": "2026-06-20",
+    "match_time": "2026-06-20T20:00:00+08:00",
+    "home_team": "巴西",
+    "away_team": "海地",
+    "home_flag": "🇧🇷",
+    "away_flag": "🇭🇹",
+    "group_name": "小组赛",
+    "stage": "B组",
+    "status": "UPCOMING"
+  },
+  {
+    "match_date": "2026-06-20",
+    "match_time": "2026-06-20T23:00:00+08:00",
+    "home_team": "德国",
+    "away_team": "西班牙",
+    "home_flag": "🇩🇪",
+    "away_flag": "🇪🇸",
+    "group_name": "小组赛",
+    "stage": "E组",
+    "status": "UPCOMING"
+  },
+  {
+    "match_date": "2026-06-20",
+    "match_time": "2026-06-20T18:00:00+08:00",
+    "home_team": "法国",
+    "away_team": "阿根廷",
+    "home_flag": "🇫🇷",
+    "away_flag": "🇦🇷",
+    "group_name": "淘汰赛",
+    "stage": "",
+    "status": "UPCOMING"
+  },
+  {
+    "match_date": "2026-06-21",
+    "match_time": "2026-06-21T02:00:00+08:00",
+    "home_team": "日本",
+    "away_team": "墨西哥",
+    "home_flag": "🇯🇵",
+    "away_flag": "🇲🇽",
+    "group_name": "小组赛",
+    "stage": "G组",
+    "status": "UPCOMING"
+  }
+]
